@@ -1,0 +1,72 @@
+/* Importar una fuente más moderna */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: #ffffff;
+    padding: 2.5rem;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    width: 100%;
+    max-width: 400px;
+}
+
+h2 {
+    color: #1a1a1a;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-sizing: border-box; /* Importante para que el padding no desborde el ancho */
+    transition: border-color 0.3s, box-shadow 0.3s;
+    font-size: 14px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #2d89ef;
+    box-shadow: 0 0 0 3px rgba(45, 137, 239, 0.1);
+}
+
+button {
+    width: 100%;
+    background-color: #2d89ef;
+    color: white;
+    padding: 14px 20px;
+    margin: 15px 0 0;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #1b5fbd;
+}
+
+/* Mensajes de feedback */
+.success { color: #28a745; text-align: center; font-size: 14px; }
+.error { color: #dc3545; text-align: center; font-size: 14px; }

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Cliente</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 30px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #34495e;
+            font-weight: bold;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        
+        input[readonly] {
+            background-color: #ecf0f1;
+            cursor: not-allowed;
+        }
+        
+        .botones {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        
+        .btn-guardar {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-guardar:hover {
+            background-color: #229954;
+        }
+        
+        .btn-cancelar {
+            background-color: #95a5a6;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+        }
+        
+        .btn-cancelar:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .info-box {
+            background-color: #ecf0f1;
+            padding: 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            border-left: 4px solid #3498db;
+        }
+        
+        .info-box p {
+            margin: 5px 0;
+            color: #34495e;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>Editar Cliente</h1>
+        <a href="/clientes/dashboard" style="color: white; text-decoration: none;">← Volver</a>
+    </div>
+
+    <div class="container">
+        <div class="info-box">
+            <p><strong>ID Cliente:</strong> {{ cliente.id }}</p>
+            <p><strong>Correo (no editable):</strong> {{ cliente.correo }}</p>
+            <p><strong>BD Asignada:</strong> {{ cliente.nombre_bd }}</p>
+        </div>
+
+        <form method="POST">
+            <div class="form-group">
+                <label for="contacto">Nombre del Contacto</label>
+                <input type="text" id="contacto" name="contacto" value="{{ cliente.contacto }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="empresa">Empresa</label>
+                <input type="text" id="empresa" name="empresa" value="{{ cliente.empresa }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="pais">País</label>
+                <input type="text" id="pais" name="pais" value="{{ cliente.pais }}" required>
+            </div>
+
+            <div class="form-group">
+                <label for="plan">Plan</label>
+                <select id="plan" name="plan" required>
+                    <option value="BASICO" {% if cliente.plan == 'BASICO' %}selected{% endif %}>BÁSICO</option>
+                    <option value="PROFESIONAL" {% if cliente.plan == 'PROFESIONAL' %}selected{% endif %}>PROFESIONAL</option>
+                    <option value="EMPRESARIAL" {% if cliente.plan == 'EMPRESARIAL' %}selected{% endif %}>EMPRESARIAL</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="capacidad_usada">Capacidad Usada</label>
+                <input type="text" id="capacidad_usada" name="capacidad_usada" value="{{ cliente.capacidad_usada if cliente.capacidad_usada else '' }}">
+            </div>
+
+            <div class="botones">
+                <button type="submit" class="btn btn-guardar">💾 Guardar Cambios</button>
+                <a href="/clientes/dashboard" class="btn btn-cancelar">❌ Cancelar</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

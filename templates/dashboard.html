@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gestión de Clientes</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f5f5;
+        }
+        
+        .navbar {
+            background-color: #2c3e50;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .navbar h1 {
+            font-size: 24px;
+        }
+        
+        .logout-btn {
+            background-color: #e74c3c;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+        
+        .filtros {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .filtros h2 {
+            margin-bottom: 20px;
+            color: #2c3e50;
+        }
+        
+        .filtro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .filtro-grid input,
+        .filtro-grid select {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .filtro-grid input:focus,
+        .filtro-grid select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+        }
+        
+        .filtro-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .btn-search {
+            background-color: #3498db;
+            color: white;
+        }
+        
+        .btn-search:hover {
+            background-color: #2980b9;
+        }
+        
+        .btn-reset {
+            background-color: #95a5a6;
+            color: white;
+        }
+        
+        .btn-reset:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .tabla-container {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        thead {
+            background-color: #34495e;
+            color: white;
+        }
+        
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ecf0f1;
+        }
+        
+        th {
+            font-weight: bold;
+        }
+        
+        tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .btn-editar {
+            background-color: #27ae60;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        
+        .btn-editar:hover {
+            background-color: #229954;
+        }
+        
+        .btn-eliminar {
+            background-color: #e74c3c;
+            color: white;
+            padding: 8px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        
+        .btn-eliminar:hover {
+            background-color: #c0392b;
+        }
+        
+        .acciones {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        
+        .alert.success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .alert.error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .sin-resultados {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h1>📊 Dashboard - Gestión de Clientes</h1>
+        <a href="/auth/logout" class="logout-btn">Cerrar sesión</a>
+    </div>
+
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="filtros">
+            <h2>🔍 Filtros de Búsqueda</h2>
+            <form method="GET" action="/clientes/dashboard">
+                <div class="filtro-grid">
+                    <input type="text" name="nombre" placeholder="Buscar por Nombre" value="{{ filtro_nombre }}">
+                    <input type="text" name="correo" placeholder="Buscar por Correo" value="{{ filtro_correo }}">
+                    <input type="text" name="empresa" placeholder="Buscar por Empresa" value="{{ filtro_empresa }}">
+                    <select name="plan">
+                        <option value="">- Seleccionar Plan -</option>
+                        <option value="BASICO" {% if filtro_plan == 'BASICO' %}selected{% endif %}>BÁSICO</option>
+                        <option value="PROFESIONAL" {% if filtro_plan == 'PROFESIONAL' %}selected{% endif %}>PROFESIONAL</option>
+                        <option value="EMPRESARIAL" {% if filtro_plan == 'EMPRESARIAL' %}selected{% endif %}>EMPRESARIAL</option>
+                    </select>
+                    <input type="text" name="capacidad_usada" placeholder="Buscar por capacidad_usada" value="{{ filtro_capacidad }}">
+                </div>
+                <div class="filtro-buttons">
+                    <button type="submit" class="btn btn-search">🔍 Buscar</button>
+                    <a href="/clientes/dashboard" class="btn btn-reset">↻ Limpiar Filtros</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="tabla-container">
+            {% if clientes %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Empresa</th>
+                            <th>País</th>
+                            <th>Plan</th>
+                            <th>capacidad_usada</th>
+                            <th>BD Asignada</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cliente in clientes %}
+                            <tr>
+                                <td>{{ cliente.id }}</td>
+                                <td>{{ cliente.contacto }}</td>
+                                <td>{{ cliente.correo }}</td>
+                                <td>{{ cliente.empresa }}</td>
+                                <td>{{ cliente.pais }}</td>
+                                <td><strong>{{ cliente.plan }}</strong></td>
+                                <td>{{ cliente.capacidad_usada if cliente.capacidad_usada else 'N/A' }}</td>
+                                <td>{{ cliente.nombre_bd }}</td>
+                                <td>
+                                    <div class="acciones">
+                                        <a href="/clientes/editar/{{ cliente.id }}" class="btn-editar">✏️ Editar</a>
+                                        <form method="POST" action="/clientes/eliminar/{{ cliente.id }}" style="display:inline;">
+                                            <button type="submit" class="btn-eliminar" onclick="return confirm('¿Estás seguro de eliminar este cliente?')">🗑️ Eliminar</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="sin-resultados">
+                    <p>No se encontraron clientes con los filtros especificados</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
