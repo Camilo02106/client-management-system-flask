@@ -1,20 +1,124 @@
-# Entorno virtual
+# =========================
+
+# Python cache
+
+# =========================
+
+**pycache**/
+*.py[cod]
+*$py.class
+
+# =========================
+
+# Entornos virtuales
+
+# =========================
+
 venv/
-ENV/
 env/
+ENV/
+.venv/
+
+# =========================
+
+# Variables de entorno
+
+# =========================
+
+.env
+.env.*
 *.env
 
-# Archivos de cache
-__pycache__/
-*.pyc
-*.pyo
+# =========================
 
-# Configuración local
+# Archivos de configuración sensibles
+
+# =========================
+
+config.py
+database_config.py
+secrets.py
+
+# =========================
+
+# Logs
+
+# =========================
+
+*.log
+logs/
+
+# =========================
+
+# Archivos temporales
+
+# =========================
+
+*.tmp
+*.temp
+*.swp
+
+# =========================
+
+# Archivos del sistema operativo
+
+# =========================
+
+.DS_Store
+Thumbs.db
+
+# =========================
+
+# Archivos de IDE / editores
+
+# =========================
+
 .vscode/
 .idea/
+*.sublime-project
+*.sublime-workspace
 
-# Archivos de logs
-*.log
+# =========================
 
-# Archivos de base de datos temporales
+# Distribución / build
+
+# =========================
+
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# =========================
+
+# Archivos de base de datos locales
+
+# =========================
+
 *.sqlite3
+*.db
+
+# =========================
+
+# Archivos de pruebas
+
+# =========================
+
+.coverage
+.pytest_cache/
+
+# =========================
+
+# Archivos de migración (si usas)
+
+# =========================
+
+migrations/
+
+# =========================
+
+# Archivos generados por Flask
+
+# =========================
+
+instance/
